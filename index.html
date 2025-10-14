@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jyotisha Yantra Dimensions Calculator</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font and Playfair Display for heritage theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+    <style>
+        /* --- CULTURAL AESTHETIC COLOR PALETTE FOR DARK BG --- */
+        :root {
+            --color-secondary: #FFD700; /* Rich Gold */
+            --color-accent: #FFA500; /* Amber/Orange Gold */
+            --color-terracotta: #A52A2A; /* Deep Crimson/Brown Red for buttons */
+            --color-dark-parchment: rgba(255, 255, 255, 0.08); /* Translucent Dark Card Background */
+            --navbar-height: 64px; /* Height of the sticky navbar */
+        }
+        
+        /* --- GLITTERY BLACK ANIMATED BACKGROUND (Layer 1, 2, 3) --- */
+        .glitter-bg {
+            background-color: #0d0d0d;
+            min-height: 100vh;
+            position: relative; 
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            padding-top: var(--navbar-height); 
+        }
+
+        /* Layer 1: Enhanced Multi-Color Astronomical Sparkle Animation (Now persistent) */
+        .glitter-bg::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: -2;
+            
+            /* ENHANCED: Creating dense, multi-color sparkle using layered radial gradients (Astronomical theme) */
+            background: 
+                /* High-density, tiny specks (White/Blue-White - Hot Stars) */
+                radial-gradient(circle at 5% 95%, rgba(224, 255, 255, 0.5) 1.5px, transparent 3.5px),
+                radial-gradient(circle at 85% 15%, rgba(255, 215, 0, 0.4) 1px, transparent 2.5px), /* Yellow-Gold */
+                radial-gradient(circle at 25% 65%, rgba(255, 255, 255, 0.6) 1.5px, transparent 3px),
+                radial-gradient(circle at 60% 30%, rgba(255, 100, 100, 0.3) 2px, transparent 4px), /* Red Sparkle */
+                
+                /* Mid-density Yellow/Gold and White/Blue */
+                radial-gradient(circle at 15% 40%, rgba(255, 215, 0, 0.35) 1px, transparent 2.5px),
+                radial-gradient(circle at 70% 80%, rgba(224, 255, 255, 0.4) 1.5px, transparent 3.5px),
+                radial-gradient(circle at 40% 10%, rgba(255, 100, 100, 0.25) 1px, transparent 3px), /* Red Sparkle */
+                radial-gradient(circle at 95% 70%, rgba(255, 215, 0, 0.5) 2px, transparent 4px),
+
+                /* More subtle, scattered points */
+                radial-gradient(circle at 50% 5%, rgba(224, 255, 255, 0.4) 1px, transparent 2px),
+                radial-gradient(circle at 30% 90%, rgba(255, 215, 0, 0.3) 1.5px, transparent 3px),
+                radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.45) 1px, transparent 2.5px),
+                radial-gradient(circle at 10% 20%, rgba(255, 100, 100, 0.2) 1.5px, transparent 3.5px), /* Red Sparkle */
+                radial-gradient(circle at 75% 40%, rgba(173, 216, 230, 0.3) 1px, transparent 2.5px), /* Faint Blue */
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.3) 1.5px, transparent 3px),
+                radial-gradient(circle at 45% 25%, rgba(255, 165, 0, 0.4) 1px, transparent 2px), /* Orange */
+                
+                /* Subtle, slow moving accents (Original glid retained) */
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 5%, transparent 15%),
+                radial-gradient(circle at 10% 90%, rgba(255, 215, 0, 0.08) 5%, transparent 15%),
+                radial-gradient(circle at 90% 10%, rgba(139, 0, 0, 0.09) 5%, transparent 15%),
+                
+                /* Base repeating dark texture for depth (Grid/Glid) */
+                repeating-conic-gradient(#000000 0% 1%, #111111 1% 2%);
+            
+            background-size: 150% 150%; 
+            animation: sparkle-shift 90s linear infinite; /* Slower, majestic shift (Now position-based only) */
+        }
+
+        /* KEYFRAME UPDATE: Removed large 'transform: translate' to ensure the background never moves off-screen. 
+           Only continuous background-position shift remains for seamless, persistent animation. */
+        @keyframes sparkle-shift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* Layer 2: Faint starfield with a very slow drift (More astronomical look) */
+        .glitter-bg::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; 
+            background-image: radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+            background-size: 100px 100px; 
+            opacity: 0.15; 
+            pointer-events: none;
+            animation: starfield-drift 120s linear infinite; 
+        }
+
+        @keyframes starfield-drift {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        /* --- END BACKGROUND STYLES --- */
+
+        .header-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* --- STICKY NAV BAR STYLES --- */
+        .fixed-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--navbar-height);
+            z-index: 1000;
+            background-color: rgba(13, 13, 13, 0.95); /* Dark background with slight transparency */
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 6px -1px rgba(255, 215, 0, 0.2); /* Gold shadow */
+        }
+        /* ... (Nav links styles remain the same) ... */
+
+        /* --- Card and Component Styling --- */
+        .yantra-card {
+            background-color: var(--color-dark-parchment);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 480px;
+            border-left: 5px solid var(--color-terracotta);
+        }
+        .yantra-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), 0 10px 15px rgba(165, 42, 42, 0.5);
+        }
+        .image-placeholder {
+            height: 140px;
+            background-color: rgba(255, 215, 0, 0.1); /* Gold tint placeholder */
+            border: 2px solid var(--color-accent);
+            color: var(--color-secondary);
+        }
+        
+        /* ENHANCED: Increased font size for main output value (retained from previous request) */
+        .dimension-value {
+            font-size: 3.5rem; /* Increased from 2.5rem */
+            font-weight: 900;
+            color: var(--color-accent);
+            text-shadow: 1px 1px 5px rgba(255, 215, 0, 0.4);
+        }
+
+        .yantra-description-card {
+            background-color: rgba(40, 40, 40, 0.8); /* Darker, less transparent card for text readability */
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            border-left: 4px solid var(--color-accent);
+        }
+
+        /* General element styling for dark mode */
+        input {
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            color: var(--color-secondary) !important;
+            border-color: var(--color-accent) !important;
+        }
+        
+        /* Utility Classes from original CSS */
+        .animate-init { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; transition-delay: 0.1s; }
+        .animate-visible { opacity: 1; transform: translateY(0); }
+        @keyframes floating { 0% { transform: translate(0, 0px) rotate(0.1deg); } 50% { transform: translate(-3px, -5px) rotate(-0.1deg); } 100% { transform: translate(0, 0px) rotate(0.1deg); } }
+        .floating-header { animation: floating 15s ease-in-out infinite; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--color-accent); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; margin-right: 8px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .ripple-button { position: relative; overflow: hidden; }
+        .ripple-button:after { content: ""; position: absolute; top: 50%; left: 50%; width: 5px; height: 5px; background: rgba(255, 255, 255, 0.5); opacity: 0; border-radius: 100%; transform: scale(1) translate(-50%, -50%); transition: all 0.5s ease-out; }
+        .ripple-button:active:after { transform: scale(20) translate(-50%, -50%); opacity: 1; transition: 0s; }
+    </style>
+</head>
+<body class="glitter-bg" id="body-main">
+    
+    <!-- Navigation Bar (Fixed/Sticky) -->
+    <nav class="fixed-nav flex items-center justify-between px-4 sm:px-8">
+        <div class="text-xl font-bold header-font text-white/90 flex items-center">
+            <svg class="w-6 h-6 mr-2 text-amber-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 01-2 0V3a1 1 0 011-1zm4 10a4 4 0 01-8 0h8zm-1.5 5.242c1.472-.562 2.748-1.583 3.748-2.848a.5.5 0 00-.773-.635 6.014 6.014 0 00-4.47 0 .5.5 0 00-.773.635c1.02.583 2.296 1.583 3.748 2.848zM10 18a1 1 0 01-1-1v-1a1 1 0 112 0v1a1 1 0 01-1 1zm-4-3a.5.5 0 01.5-.5h.5a.5.5 0 010 1H6.5a.5.5 0 01-.5-.5zM15 15a.5.5 0 01-.5.5h-.5a.5.5 0 010-1h.5a.5.5 0 01.5.5zM4 10a1 1 0 011-1h1a1 1 0 010 2H5a1 1 0 01-1-1zm14 0a1 1 0 01-1-1h-1a1 1 0 010 2h1a1 1 0 011-1zM3 5a1 1 0 011-1h1a1 1 0 010 2H4a1 1 0 01-1-1zm14 0a1 1 0 011-1h1a1 1 0 010 2h-1a1 1 0 01-1-1z"/></svg>
+            Jyotisha <span class="text-amber-500">Sizing</span>
+        </div>
+        <div class="flex space-x-2 sm:space-x-4 overflow-x-auto whitespace-nowrap">
+            <a href="#home" class="nav-link" onclick="scrollToSection(event, 'home')">Home</a>
+            <a href="#location-details" class="nav-link" onclick="scrollToSection(event, 'location-details')">Location Input</a>
+            <a href="#yantras-info" class="nav-link" onclick="scrollToSection(event, 'yantras-info')">Calculations</a>
+            <a href="#yantras-description" class="nav-link" onclick="scrollToSection(event, 'yantras-description')">Yantra Details</a>
+        </div>
+    </nav>
+    
+    <div class="min-h-screen p-4 sm:p-8 flex flex-col items-center">
+        <!-- Header Section -->
+        <header id="home" class="text-center w-full max-w-6xl mb-10 p-8 rounded-xl shadow-2xl border-b-8 floating-header animate-init"
+                style="background-color: var(--color-dark-parchment); border-color: var(--color-terracotta);" >
+            
+            <!-- Logo Placeholder (NEW) -->
+            <div class="mx-auto w-32 h-32 mb-6 rounded-full border-4 flex items-center justify-center text-3xl font-extrabold shadow-xl"
+                 style="background-color: rgba(255, 215, 0, 0.1); border-color: var(--color-secondary); color: var(--color-secondary);">
+                <span class="header-font">YANTRA</span>
+            </div>
+            
+            <h1 class="header-font text-5xl sm:text-6xl font-extrabold mb-2" style="color: var(--color-secondary);">
+                Jyotisha Yantra Sizing
+            </h1>
+            <p class="text-2xl font-medium tracking-wide" style="color: var(--color-accent);">
+                Traditional Astronomical Instruments of India
+            </p>
+            <p class="mt-4 text-base text-gray-300 max-w-4xl mx-auto border-t pt-3 mt-3 border-gray-700">
+                Calculate the foundational angular dimensions for the primary Yantras based on your local latitude ($\phi$).
+            </p>
+        </header>
+
+        <main class="w-full max-w-6xl">
+            <!-- Location Input Card -->
+            <div id="location-details" class="p-6 sm:p-10 rounded-2xl shadow-inner mb-12 border-4 animate-init"
+                 style="background-color: rgba(30, 30, 30, 0.9); border-color: var(--color-terracotta);">
+                <h2 class="text-3xl font-bold mb-6 header-font" style="color: var(--color-secondary);">1. Enter Location Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label for="latitude" class="block text-base font-semibold mb-2" style="color: var(--color-secondary);">Latitude ($\phi$) in Degrees</label>
+                        <input type="number" id="latitude" placeholder="e.g., 26.9124 (Jaipur)" value="26.9124" min="-90" max="90" step="any"
+                               class="w-full p-4 border-2 rounded-lg shadow-md focus:ring-4 focus:ring-amber-500 focus:border-amber-700 transition duration-200">
+                        <p class="text-sm mt-2 text-gray-400">North positive (+), South negative (-)</p>
+                    </div>
+                    <div>
+                        <label for="longitude" class="block text-base font-semibold mb-2" style="color: var(--color-secondary);">Longitude ($\lambda$) in Degrees (Optional)</label>
+                        <input type="number" id="longitude" placeholder="e.g., 75.7873 (Jaipur)" value="75.7873" step="any"
+                               class="w-full p-4 border-2 rounded-lg shadow-md focus:ring-4 focus:ring-amber-500 focus:border-amber-700 transition duration-200">
+                        <p class="text-sm mt-2 text-gray-400">Longitude affects local time but not Yantra angular dimensions.</p>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex justify-center">
+                    <button onclick="calculateYantraDimensions()"
+                            id="calculate-button"
+                            class="ripple-button px-10 py-4 text-white font-extrabold rounded-full shadow-xl transition transform hover:scale-[1.03] duration-300 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-amber-600/50"
+                            style="background-color: var(--color-terracotta); box-shadow: 0 5px 0 var(--color-accent);">
+                        Calculate Yantra Dimensions
+                    </button>
+                </div>
+                <!-- Error Message Display -->
+                <div id="error-message" class="mt-4 text-center text-red-400 font-bold" style="display: none;"></div>
+            </div>
+
+            <!-- Calculations Section (MOVED TO TOP) -->
+            <div id="yantras-info" class="animate-init pt-12">
+                <!-- ENHANCED: Increased font size to text-4xl sm:text-5xl -->
+                <h2 class="text-4xl sm:text-5xl font-bold mb-8 header-font text-center" style="color: var(--color-secondary);">2. Angular Calculations (Based on $\phi$ = <span id="display-latitude">--</span>$^\circ$)</h2>
+
+                <!-- Location Display Card -->
+                <div class="p-8 mb-8 col-span-4 rounded-2xl border-4" style="background-color: rgba(30, 30, 30, 0.9); border-color: var(--color-accent); min-height: auto;">
+                    <!-- ENHANCED: Increased font size to text-3xl -->
+                    <h3 class="text-3xl font-bold mb-2 header-font" style="color: var(--color-secondary);">Location: <span id="location-name">--</span></h3>
+                    <p class="text-xl font-medium mb-4" style="color: var(--color-accent);">
+                        Coordinates: (<span class="font-bold">&#981;</span> = <span id="display-latitude-loc">--</span>&deg;, <span class="font-bold">&lambda;</span> = <span id="display-longitude-loc">--</span>&deg;)
+                    </p>
+                    
+                    <!-- MAP CONTAINER -->
+                    <div id="location-map-container" class="w-full h-72 rounded-xl shadow-inner flex flex-col items-center justify-center text-center p-4 bg-gray-900 relative overflow-hidden">
+                        <!-- Dynamic Background Image Container -->
+                        <div class="absolute inset-0 bg-cover bg-center transition duration-500" id="map-background-image"></div>
+                        <!-- Information Overlay -->
+                        <div class="relative z-10 p-4 rounded-lg bg-black/50 text-white font-bold text-lg leading-snug" id="location-info-overlay">
+                            Loading Map View...
+                        </div>
+                    </div>
+                    
+                    <a id="map-link" href="#" target="_blank" class="block w-full mt-6 text-center px-6 py-3 bg-blue-700 text-white font-bold rounded-full hover:bg-blue-800 transition duration-150 transform hover:shadow-lg">
+                        View Location on External Map (Google Maps)
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="yantra-grid">
+                    
+                    <!-- 1. Samrat Yantra -->
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl">SAMRAT</div>
+                        <!-- ENHANCED: Increased font size to text-2xl -->
+                        <h3 class="text-2xl font-bold mb-3 header-font" style="color: var(--color-secondary);">Samrat Yantra</h3>
+                        <p class="text-gray-400 text-sm mb-3 flex-grow">The Supreme Instrument (Equatorial Sundial). Gnomon aligned with the Earth's axis.</p>
+                        <div class="text-3xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Gnomon Angle: <span id="samrat-angle" class="dimension-value">--</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Latitude ($|\phi|$)</p>
+                    </div>
+                    
+                    <!-- 2. Dhruva-Protha-Chakra Yanra -->
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl">DHRUVA</div>
+                         <!-- ENHANCED: Increased font size to text-2xl -->
+                        <h3 class="text-2xl font-bold mb-3 header-font" style="color: var(--color-secondary);">Dhruva-Protha-Chakra Yanra</h3>
+                        <p class="text-gray-400 text-sm mb-3 flex-grow">Instrument for sighting the Pole Star (Dhruva) to confirm the local altitude of the celestial pole.</p>
+                        <div class="text-3xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Polaris Altitude: <span id="dhruva-angle" class="dimension-value">--</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Latitude ($|\phi|$)</p>
+                    </div>
+
+                    <!-- 5. Dakshinottara Bhitti Yantra (Equator Altitude) -->
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl">DAKSHINOTTARA</div>
+                         <!-- ENHANCED: Increased font size to text-2xl -->
+                        <h3 class="text-2xl font-bold mb-3 header-font" style="color: var(--color-secondary);">Dakshinottara Bhitti Yantra</h3>
+                        <p class="text-gray-400 text-sm mb-3 flex-grow">The Meridian Wall. Measures max altitude. Key dimension is the height of the celestial equator at noon.</p>
+                        <div class="text-3xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Equator Altitude: <span id="dakshino-bhitti-angle" class="dimension-value">--</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Co-Latitude ($90^\circ - |\phi|$)</p>
+                    </div>
+
+                    <!-- 7. Nadi valaya yantra -->
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl">NADI VALAYA</div>
+                         <!-- ENHANCED: Increased font size to text-2xl -->
+                        <h3 class="text-2xl font-bold mb-3 header-font" style="color: var(--color-secondary);">Nadi Valaya Yantra</h3>
+                        <p class="text-gray-400 text-sm mb-3 flex-grow">The Equatorial Ring Dial. The plates must be parallel to the celestial equator's plane.</p>
+                        <div class="text-3xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Equatorial Plane Tilt: <span id="nadi-valaya-angle" class="dimension-value">--</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Co-Latitude ($90^\circ - |\phi|$)</p>
+                    </div>
+                    
+                    <!-- 8. Rasivalaya Yantra -->
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl">RASIVALAYA</div>
+                         <!-- ENHANCED: Increased font size to text-2xl -->
+                        <h3 class="text-2xl font-bold mb-3 header-font" style="color: var(--color-secondary);">Rasivalaya Yantra</h3>
+                        <p class="text-gray-400 text-sm mb-3 flex-grow">Measures Celestial Longitude. Its inclination is fixed to the obliquity of the ecliptic, independent of local latitude.</p>
+                        <div class="text-3xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Ecliptic Tilt: <span id="rasivalaya-angle" class="dimension-value fixed-dimension">--</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Obliquity of the Ecliptic ($\epsilon \approx 23.44^\circ$)</p>
+                    </div>
+
+                    <!-- Additional Yantras (Latitude-dependent) -->
+                     <!-- 3. Yantra-Samrat (Combination) -->
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl">YANTRA-SAMRAT</div>
+                         <!-- ENHANCED: Increased font size to text-2xl -->
+                        <h3 class="text-2xl font-bold mb-3 header-font" style="color: var(--color-secondary);">Yantra-Samrat</h3>
+                        <p class="text-gray-400 text-sm mb-3 flex-grow">Combines timekeeping with polar sighting. The main structural axis (polar axis) must be set precisely.</p>
+                        <div class="text-3xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Polar Axis Angle: <span id="yantra-samrat-angle" class="dimension-value">--</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Latitude ($|\phi|$)</p>
+                    </div>
+
+                    <!-- 4. Golayantra chakra yantra -->
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl">GOLAYANTRA</div>
+                         <!-- ENHANCED: Increased font size to text-2xl -->
+                        <h3 class="text-2xl font-bold mb-3 header-font" style="color: var(--color-secondary);">Golayantra</h3>
+                        <p class="text-gray-400 text-sm mb-3 flex-grow">A physical model of the celestial sphere. Used to track motions; the rotation axis tilt must match latitude.</p>
+                        <div class="text-3xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Rotation Axis Tilt: <span id="golayantra-angle" class="dimension-value">--</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Latitude ($|\phi|$)</p>
+                    </div>
+                    
+                    <!-- 6. Bhitti Yantra -->
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl">BHITTI</div>
+                         <!-- ENHANCED: Increased font size to text-2xl -->
+                        <h3 class="text-2xl font-bold mb-3 header-font" style="color: var(--color-secondary);">Bhitti Yantra (General)</h3>
+                        <p class="text-gray-400 text-sm mb-3 flex-grow">A general term for a wall-mounted quadrant used for angular measurements, often referencing the meridian altitude.</p>
+                        <div class="text-3xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Equator Altitude: <span id="bhitti-angle" class="dimension-value">--</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Co-Latitude ($90^\circ - |\phi|$)</p>
+                    </div>
+
+                    <!-- Scale-Dependent Yantras (Smaller titles/values as they are placeholders) -->
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder bg-gray-900/50 rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl" style="color: #6B7280;">DIGAMSA</div>
+                        <h3 class="text-xl font-bold mb-3 header-font" style="color: #9CA3AF;">Digamsa Yantra</h3>
+                        <p class="text-gray-500 text-sm mb-3 flex-grow">Used for measuring Azimuth (horizontal bearing). Requires perfect North-South alignment.</p>
+                        <div class="text-2xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Foundational Alignment: <span class="text-gray-400 dimension-value">True N-S</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Alignment Angle ($0^\circ$)</p>
+                    </div>
+
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder bg-gray-900/50 rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl" style="color: #6B7280;">RAMA</div>
+                        <h3 class="text-xl font-bold mb-3 header-font" style="color: #9CA3AF;">Rama Yantra</h3>
+                        <p class="text-gray-500 text-sm mb-3 flex-grow">A pair of cylindrical instruments. Proportions (Gnomon Height / Radius) are critical for its scale.</p>
+                        <div class="text-2xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Key Dimension: <span class="text-gray-400 dimension-value">Ratio (e.g., 1:1)</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Architect's Scale</p>
+                    </div>
+
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder bg-gray-900/50 rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl" style="color: #6B7280;">PALAKA</div>
+                        <h3 class="text-xl font-bold mb-3 header-font" style="color: #9CA3AF;">Palaka Yantra</h3>
+                        <p class="text-gray-500 text-sm mb-3 flex-grow">A portable quadrant or tablet for general angular measurements. Physical size determined by the arc's radius.</p>
+                        <div class="text-2xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Key Dimension: <span class="text-gray-400 dimension-value">Arc Radius</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Architect's Scale</p>
+                    </div>
+
+                    <div class="yantra-card p-6 animate-init">
+                        <div class="image-placeholder bg-gray-900/50 rounded-lg mb-3 flex items-center justify-center text-center font-extrabold text-xl" style="color: #6B7280;">CHAAPA</div>
+                        <h3 class="text-xl font-bold mb-3 header-font" style="color: #9CA3AF;">Chaapa Yantra</h3>
+                        <p class="text-gray-500 text-sm mb-3 flex-grow">A 'bow' shaped instrument used to measure celestial arcs and angular separations.</p>
+                        <div class="text-2xl font-extrabold text-white border-t pt-3 border-gray-700 mt-auto">
+                            Key Dimension: <span class="text-gray-400 dimension-value">Ring Diameter</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Dimension is: Architect's Scale</p>
+                    </div>
+
+
+                </div>
+            </div>
+            
+            <!-- Yantra Description Section (MOVED TO BOTTOM) -->
+            <div id="yantras-description" class="animate-init pt-12">
+                <h2 class="text-3xl font-bold mb-8 header-font text-center" style="color: var(--color-secondary);">
+                    3. The Heritage of Observation: Detailed Yantra Descriptions
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Samrat Yantra -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Samrat Yantra (The Supreme Instrument)</h3>
+                        <p class="text-gray-300">The most iconic of the Jantar Mantar instruments, the **Samrat Yantra** is essentially a gigantic, highly accurate **equatorial sundial**. Its massive triangular gnomon is permanently aligned with the Earth's rotational axis, pointing toward the North Celestial Pole ($\text{Dhruva}$). The angle of this gnomon is the **exact measure of the local latitude** ($\phi$). Its purpose is to measure local time ($\text{Local Apparent Time}$) with high precision.</p>
+                    </div>
+                    
+                    <!-- Dhruva-Protha-Chakra Yanra -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Dhruva-Protha-Chakra Yantra (Polaris Sighting)</h3>
+                        <p class="text-gray-300">Instrument for sighting the Pole Star (Dhruva) to confirm the local altitude of the celestial pole. Since $\text{Polaris}$ is very close to the North Celestial Pole, its altitude is practically equal to the **local latitude** ($\phi$). It acts as a foundational instrument to confirm the correct angular setting for all other axis-aligned Yantras.</p>
+                    </div>
+
+                    <!-- Yantra-Samrat -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Yantra-Samrat (Combined Axis)</h3>
+                        <p class="text-gray-300">Often confused with the $\text{Samrat Yantra}$, this instrument serves as a combined tool, facilitating both $\text{timekeeping}$ and $\text{polar sighting}$. The primary requirement is that its central $\text{polar axis}$ must be set precisely parallel to the Earth's axis, meaning its inclination must be equal to the **local latitude** ($\phi$).</p>
+                    </div>
+
+                    <!-- Golayantra -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Golayantra (Celestial Sphere Model)</h3>
+                        <p class="text-gray-300">A physical, spherical model of the entire **celestial sphere** ($\text{Gola}$). It is used to track the complex motions of celestial bodies. For the model to accurately represent the sky above the observer, its $\text{rotation axis}$ must be tilted by an angle that matches the **local latitude** ($\phi$).</p>
+                    </div>
+                    
+                    <!-- Dakshinottara Bhitti Yantra -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Dakshinottara Bhitti Yantra (Meridian Wall)</h3>
+                        <p class="text-gray-300">A large quadrant or semicircle inscribed on a massive wall placed exactly on the **North-South meridian line**. It measures the maximum altitude of celestial bodies. The crucial angular setting is the altitude of the $\text{Celestial Equator}$ (at the meridian), which is fixed by the **co-latitude** ($90^\circ - |\phi|$).</p>
+                    </div>
+
+                    <!-- Bhitti Yantra (General) -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Bhitti Yantra (General Quadrant)</h3>
+                        <p class="text-gray-300">A general term for a wall-mounted instrument, typically a **quadrant** ($\frac{1}{4}$ circle) or **sextant** ($\frac{1}{6}$ circle), used for angular measurements. When referencing the $\text{meridian altitude}$, its measurements depend on the $\text{Celestial Equator's}$ height, making the **co-latitude** ($90^\circ - |\phi|$) the fundamental local dimension.</p>
+                    </div>
+
+                    <!-- Nadi Valaya Yantra -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Nadi Valaya Yantra (Equatorial Ring Dial)</h3>
+                        <p class="text-gray-300">This equatorial sundial uses two circular plates. The plane of these rings must be precisely **parallel to the Celestial Equator** ($\text{Nadi}$ refers to the equator). Therefore, the angle the rings make with the horizon is the **co-latitude** ($90^\circ - |\phi|$). It directly indicates the time.</p>
+                    </div>
+
+                    <!-- Rasivalaya Yantra -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Rasivalaya Yantra (Zodiac Circle)</h3>
+                        <p class="text-gray-300">This unique Yantra measures **Celestial Longitude** (position in the Zodiac). Its inclination is fixed by the tilt of the Earth's axis relative to its orbit, known as the **obliquity of the ecliptic** ($\epsilon \approx 23.44^\circ$). Since $\epsilon$ is a constant astronomical value, the critical dimension of the $\text{Rasivalaya}$ is fixed and **independent of local latitude**.</p>
+                    </div>
+                    
+                    <!-- Digamsa Yantra -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Digamsa Yantra (Azimuth Instrument)</h3>
+                        <p class="text-gray-300">The $\text{Digamsa}$ is used to determine the **Azimuth** (horizontal bearing) of celestial bodies, measuring their direction relative to the horizon. While it has no latitude-dependent angular tilt, its function relies on the foundational prerequisite of **perfect horizontal and North-South alignment** to establish the $\text{local meridian}$ reference.</p>
+                    </div>
+
+                    <!-- Rama Yantra -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Rama Yantra (Cylindrical Instrument)</h3>
+                        <p class="text-gray-300">A highly complex instrument, often consisting of a pair of $\text{cylindrical}$ structures used to measure both $\text{altitude}$ and $\text{azimuth}$ (horizontal and vertical coordinates). The operational function relies on accurate measurements and **geometric proportions** (like the ratio of $\text{Gnomon Height}$ to $\text{Radius}$) that are chosen by the architect rather than being fixed by the local latitude.</p>
+                    </div>
+                    
+                    <!-- Palaka Yantra -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Palaka Yantra (Portable Tablet)</h3>
+                        <p class="text-gray-300">A general term for a small, **portable quadrant or tablet** used for basic angular measurements. The operational effectiveness relies on the **Arc Radius** chosen for its construction. It is a scale-dependent instrument, where the physical size (radius) determines the readability and precision, rather than a specific geographical angle.</p>
+                    </div>
+
+                    <!-- Chaapa Yantra -->
+                    <div class="yantra-description-card">
+                        <h3 class="text-2xl font-bold header-font mb-2" style="color: var(--color-accent);">Chaapa Yantra (Arc/Bow Instrument)</h3>
+                        <p class="text-gray-300">The $\text{Chaapa}$ ($\text{bow}$) Yantra is an instrument shaped like an arc, typically a semicircle or a segment of a circle, used to measure $\text{celestial arcs}$ and $\text{angular separations}$ between objects. Similar to the $\text{Palaka}$, its critical dimension is the $\text{Ring Diameter}$ or $\text{Radius}$ of the arc, which is chosen by the builder based on the desired scale.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer Section -->
+            <footer class="mt-12 text-center text-sm text-stone-300 p-6 border-t-4 bg-black/50 rounded-xl shadow-lg animate-init" id="footer-section" style="border-color: var(--color-accent);">
+                <p class="mb-2">
+                    <span class="font-bold" style="color: var(--color-secondary);">Note:</span> These calculations provide the critical **angular** dimensions derived from latitude.
+                    Yantras with fixed scales (Digamsa, Rama, Palaka, Chaapa) are descriptive, as their physical size depends on the architect's chosen scale.
+                </p>
+                <p class="text-xs text-gray-500 mt-4">
+                    A project exploring the intersection of modern computation and ancient astronomical heritage.
+                </p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Constants for Yantra calculations
+        const OBLIQUITY_ECLIPTIC = 23.436; // Obliquity of the Ecliptic in degrees
+        const NAVBAR_HEIGHT = 64; // Must match CSS --navbar-height
+
+        // Mapping of Yantra IDs to their formula (derived from Latitude phi)
+        const YANTRA_MAP = {
+            // Latitude (|phi|) dependent
+            'samrat-angle': (lat) => Math.abs(lat),
+            'dhruva-angle': (lat) => Math.abs(lat),
+            'yantra-samrat-angle': (lat) => Math.abs(lat),
+            'golayantra-angle': (lat) => Math.abs(lat),
+
+            // Co-Latitude (90 - |phi|) dependent
+            'dakshino-bhitti-angle': (lat) => 90 - Math.abs(lat),
+            'bhitti-angle': (lat) => 90 - Math.abs(lat),
+            'nadi-valaya-angle': (lat) => 90 - Math.abs(lat),
+
+            // Obliquity (epsilon) dependent (Fixed Angle)
+            'rasivalaya-angle': () => OBLIQUITY_ECLIPTIC,
+
+            // Scale/Alignment dependent (No live calculation needed, handled in HTML)
+        };
+        
+        /**
+         * Custom smooth scrolling function to account for the fixed navbar height.
+         */
+        function scrollToSection(event, targetId) {
+            event.preventDefault();
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - NAVBAR_HEIGHT;
+
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        /**
+         * Formats a number to a string with two decimal places and the degree symbol.
+         */
+        function formatAngle(value) {
+            return `${value.toFixed(2)}&deg;`;
+        }
+
+        /**
+         * Animates a numeric count-up effect for the angular dimension value.
+         */
+        function animateCountUp(element, finalValue, duration = 700) {
+            if (finalValue === OBLIQUITY_ECLIPTIC) {
+                element.innerHTML = formatAngle(finalValue);
+                return;
+            }
+
+            const startValue = 0;
+            let startTime = null;
+
+            const step = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const progress = timestamp - startTime;
+                const percentage = Math.min(progress / duration, 1);
+                const currentValue = startValue + (finalValue - startValue) * percentage;
+
+                element.innerHTML = `${currentValue.toFixed(2)}&deg;`;
+
+                if (percentage < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    element.innerHTML = formatAngle(finalValue);
+                }
+            };
+
+            window.requestAnimationFrame(step);
+        }
+
+        /**
+         * Helper function to perform fetch with exponential backoff for resilience.
+         */
+        async function exponentialBackoffFetch(url, options, retries = 5, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return response;
+                } catch (error) {
+                    if (i === retries - 1) throw error;
+                    await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i)));
+                }
+            }
+        }
+
+        /**
+         * Uses the Google Search tool via the Gemini API to attempt to reverse geocode coordinates to a city name.
+         */
+        async function reverseGeocodeCoordinates(lat, lon) {
+            const userQuery = `Identify the primary city and country name for coordinates latitude ${lat.toFixed(4)} and longitude ${lon.toFixed(4)}. Respond with only the City, Country.`;
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                tools: [{ "google_search": {} }],
+                systemInstruction: {
+                    parts: [{ text: "You are a precise geocoding assistant. Always respond with only the City, Country name (e.g., 'Paris, France')." }]
+                },
+            };
+
+            try {
+                const response = await exponentialBackoffFetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (text && text.length > 3) {
+                    return text.replace(/[\n\r]/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                }
+                
+                return "Unknown City (Search Result Empty)";
+
+            } catch (e) {
+                console.error("Reverse Geocoding API failed:", e);
+                return "Unknown City (API Error)";
+            }
+        }
+
+        /**
+         * Sets up the Intersection Observer for scroll-triggered animations.
+         */
+        function setupIntersectionObserver() {
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1 
+            });
+
+            // Observe all sections and cards
+            const elementsToAnimate = document.querySelectorAll('.animate-init, #yantra-grid .yantra-card');
+            elementsToAnimate.forEach((el, index) => {
+                 // Add a slight delay for staggered effect
+                 if (el.classList.contains('yantra-card')) {
+                     el.style.transitionDelay = `${0.1 + index * 0.05}s`;
+                 }
+                 observer.observe(el);
+            });
+        }
+
+
+        /**
+         * Implements the core logic to calculate and display the Yantra dimensions based on latitude.
+         */
+        async function calculateYantraDimensions() {
+            // Fetch all necessary elements early
+            const latitudeInput = document.getElementById('latitude');
+            const longitudeInput = document.getElementById('longitude');
+            const errorMessage = document.getElementById('error-message');
+            
+            const displayLatYantra = document.getElementById('display-latitude');
+            const displayLatLoc = document.getElementById('display-latitude-loc');
+            const displayLonLoc = document.getElementById('display-longitude-loc');
+            const mapLink = document.getElementById('map-link');
+            const mapBackground = document.getElementById('map-background-image');
+            const locationInfoOverlay = document.getElementById('location-info-overlay');
+            const locationNameElement = document.getElementById('location-name');
+
+
+            if (!latitudeInput || !longitudeInput || !errorMessage) {
+                console.error("Critical elements missing. Check HTML IDs.");
+                if (errorMessage) {
+                    errorMessage.textContent = 'Error: Page display elements are missing. Please check the HTML structure.';
+                    errorMessage.style.display = 'block';
+                }
+                return;
+            }
+
+            // Clear previous results and errors
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = '';
+            
+            let latitude, longitude;
+            
+            try {
+                latitude = parseFloat(latitudeInput.value);
+                longitude = parseFloat(longitudeInput.value);
+            } catch (e) {
+                errorMessage.textContent = 'Please enter a valid numeric value for Latitude and Longitude.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Input validation
+            if (isNaN(latitude) || latitude < -90 || latitude > 90) {
+                errorMessage.textContent = 'Latitude must be a number between -90 and 90 degrees.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            if (isNaN(longitude) || longitude < -180 || longitude > 180) {
+                 longitude = 0;
+            }
+
+            // --- Location Display and Naming ---
+            locationNameElement.innerHTML = '<span class="spinner" style="border-top-color: var(--color-accent);"></span>Fetching location...';
+            locationInfoOverlay.innerHTML = 'Loading Map View...';
+            mapBackground.style.backgroundImage = 'none'; 
+
+            let locationName;
+
+            if (latitude.toFixed(4) === "26.9124" && longitude.toFixed(4) === "75.7873") {
+                locationName = "Jaipur, Rajasthan, India (Vedic Reference)";
+            } else {
+                locationName = await reverseGeocodeCoordinates(latitude, longitude);
+            }
+
+            locationNameElement.textContent = locationName;
+            
+            // Update coordinates display
+            displayLatLoc.textContent = latitude.toFixed(4);
+            displayLonLoc.textContent = longitude.toFixed(4);
+
+            // Generate Map URL
+            const mapUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+            mapLink.href = mapUrl;
+
+            // Update Static Map Background image
+            const mapPlaceholderUrl = `https://placehold.co/800x288/1f2937/d1d5db?text=Map+Preview+for+${locationName.split(',')[0]}&font=inter&css={"font-size":"24px"}`;
+            mapBackground.style.backgroundImage = `url('${mapPlaceholderUrl}')`;
+            
+            // Update Location Info Overlay text (Using HTML entities for phi and lambda)
+            locationInfoOverlay.innerHTML = `
+                <div class="text-xl sm:text-2xl">${locationName}</div>
+                <div class="text-sm sm:text-lg mt-1">(&#981;: ${latitude.toFixed(4)}&deg;, &lambda;: ${longitude.toFixed(4)}&deg;)</div>
+            `;
+            
+            // --- Yantra Dimension Calculation ---
+            displayLatYantra.textContent = latitude.toFixed(4);
+
+            // Calculation and display for each Yantra dimension
+            for (const id in YANTRA_MAP) {
+                if (YANTRA_MAP.hasOwnProperty(id)) {
+                    const formula = YANTRA_MAP[id];
+                    const angle = formula(latitude);
+                    const element = document.getElementById(id);
+                    if (element) {
+                        animateCountUp(element, angle);
+                    }
+                }
+            }
+        }
+
+        // Run setup and calculation on load
+        window.onload = function() {
+            // 1. Initial Calculation with default values
+            calculateYantraDimensions(); 
+            
+            // 2. Setup Scroll Observer for Fade-in animations
+            setupIntersectionObserver();
+        };
+
+    </script>
+</body>
+</html>
