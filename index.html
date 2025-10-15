@@ -9,6 +9,8 @@
     <!-- Load KaTeX for high-quality math rendering -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" xintegrity="sha384-wnsB0K5U1I6L0T2Qz9n/E/U7c/7vY7D/n8sWj1F49u3B7wz+hE6/tF0A+9Hl4j" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" xintegrity="sha384-bN38M0T1b2k2sC/l0X3Q9hT9F/q6P2m+L0S0K3yE0A9N1J0g8M6c+4+fA7z9qX6" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" xintegrity="sha384-kMngWJdM73Yh8hJ6cQjGf/q3nQ5K5xKj3vK3p/l6p3c/h2F3q8p8uT7dE9Fj3Jk2f" crossorigin="anonymous" onload="renderMathInElement(document.body, {delimiters: [
         {left: '$$', right: '$$', display: true},
         {left: '$', right: '$', display: false}
@@ -175,6 +177,28 @@
             height: 64px;
             stroke-width: 1.5;
         }
+
+        #yantra-capture-area {
+  background: radial-gradient(circle at center, rgba(255,215,0,0.05), rgba(0,0,0,0.95));
+  padding: 24px;
+  border: 2px solid rgba(255,215,0,0.25);
+  border-radius: 16px;
+  color: #f7f3c5;
+  font-family: 'Poppins', sans-serif;
+  text-shadow: 0 0 6px rgba(255,215,0,0.3);
+}
+
+#yantra-grid {
+  display: grid;
+  gap: 8px;
+}
+
+#yantra-grid div, #calculation-results {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 8px;
+}
+
         
         .dimension-value {
             font-size: 3.5rem;
@@ -187,12 +211,82 @@
             color: var(--color-accent) !important;
         }
 
+        #yantra-capture-area {
+  background: radial-gradient(circle at center, rgba(255,215,0,0.05), rgba(0,0,0,0.95));
+  padding: 24px;
+  border: 2px solid rgba(255,215,0,0.2);
+  border-radius: 16px;
+  box-shadow: 0 0 60px rgba(255,215,0,0.15);
+}
+
+
         /* General element styling for dark mode */
         input {
             background-color: rgba(255, 255, 255, 0.05) !important;
             color: var(--color-secondary) !important;
             border-color: var(--color-accent) !important;
         }
+
+        @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-visible-card {
+    animation: fadeUp 0.8s ease-out forwards;
+}
+
+/* Hover effects for each card */
+.yantra-description-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.yantra-description-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(255, 193, 7, 0.3); /* amber glow */
+    background-color: rgba(255, 193, 7, 0.05);
+}
+
+/* Icon animation on hover */
+.yantra-description-card:hover .yantra-icon {
+    transform: rotate(15deg) scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* 3D card effect */
+.yantra-description-card {
+    border: 1px solid rgba(255, 255, 255, 0.15); /* subtle border */
+    border-radius: 12px;
+    background: rgba(30, 30, 30, 0.8); /* slightly translucent for depth */
+    box-shadow: 6px 6px 16px rgba(0,0,0,0.4), -4px -4px 12px rgba(255,255,255,0.05); /* 3D shadow effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    cursor: pointer;
+    padding: 1.5rem;
+}
+
+/* Hover 3D lift */
+.yantra-description-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 8px 8px 20px rgba(0,0,0,0.5), -6px -6px 16px rgba(255,255,255,0.08);
+    background-color: rgba(255, 255, 255, 0.03); /* subtle highlight */
+}
+
+/* Yantra icon hover effect */
+.yantra-description-card:hover .yantra-icon {
+    transform: rotate(15deg) scale(1.15);
+    transition: transform 0.3s ease;
+}
+
+/* Fade-in animation already defined */
+@keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-visible-card {
+    animation: fadeUp 0.8s ease-out forwards;
+}
         
         /* Utility Classes */
         .animate-init { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; transition-delay: 0.1s; }
@@ -277,7 +371,7 @@
                         Calculate Yantra Dimensions
                     </button>
                 </div>
-                
+                <div class="flex flex-col items-center mt-4">
                 <!-- Twitter Share Button -->
                 <div class="mt-6 text-center" id="share-container">
                     <button onclick="shareOnTwitter()"
@@ -289,11 +383,18 @@
                         Share Yantra Calculations on X
                     </button>
                 </div>
+              
+
+                <button id="copy-button" class="ripple-button px-6 py-3 text-white font-semibold rounded-full flex items-center justify-center hover:bg-amber-400 transition mt-6" style="background-color: #1DA1F2; box-shadow: 0 3px 0 #0C7BBF;">
+                    📋 Copy Yantra Details
+                </button>
+            </div>
+
 
                 <!-- Error Message Display -->
                 <div id="error-message" class="mt-4 text-center text-red-400 font-bold" style="display: none;"></div>
             </div>
-
+<div id="yantra-capture-area">
             <!-- Calculations Section -->
             <div id="yantras-info" class="animate-init pt-12">
                 <h2 class="text-4xl sm:text-5xl font-bold mb-8 header-font text-center" style="color: var(--color-secondary);">2. Angular Calculations (Based on $\phi$ = <span id="display-latitude">--</span>$^\circ$)</h2>
@@ -500,7 +601,7 @@
 
 
                 </div>
-            </div>
+            </div></div>
             
             <!-- Yantra Description Section -->
             <div id="yantras-description" class="animate-init pt-12">
@@ -777,6 +878,30 @@
                 return "Unknown City (API Error)";
             }
         }
+        
+        // --- Copy Function ---
+document.getElementById("copy-button").addEventListener("click", () => {
+    // Capture the content you want to copy
+    const yantraArea = document.getElementById("yantra-capture-area");
+    const locationName = document.getElementById("location-name")?.textContent.trim() || "Unknown Location";
+    const yantraDetails = yantraArea ? yantraArea.innerText.trim() : "";
+
+    // Combine location and yantra info
+    const finalText = `📍 Location: ${locationName}\n\n🔯 Yantra Calculations:\n${yantraDetails}`;
+
+    if (yantraDetails && yantraDetails !== "") {
+        navigator.clipboard.writeText(finalText)
+            .then(() => {
+                alert("✅ Yantra details copied successfully!");
+            })
+            .catch(err => {
+                console.error("Copy failed: ", err);
+                alert("⚠️ Unable to copy text. Please check permissions.");
+            });
+    } else {
+        alert("⚠️ No Yantra details available to copy.");
+    }
+});
 
         /**
          * Shares the calculated location and the key Yantra dimensions on X (Twitter).
@@ -966,6 +1091,24 @@
             // 2. Setup Scroll Observer for Fade-in animations
             setupIntersectionObserver();
         };
+
+        const descriptionCards = document.querySelectorAll('#yantras-description .yantra-description-card');
+
+const descObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+            setTimeout(() => {
+                entry.target.classList.add('animate-visible-card');
+            }, index * 100); // stagger effect
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+descriptionCards.forEach(card => descObserver.observe(card));
+
+
+       
 
     </script>
 </body>
