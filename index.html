@@ -403,17 +403,17 @@
                 <h2 class="text-4xl sm:text-5xl font-bold mb-8 header-font text-center" style="color: var(--color-secondary);">2. Angular Calculations (Based on $\phi$ = <span id="display-latitude">--</span>$^\circ$)</h2>
 
                 <!-- Location Display Card -->
-                <div class="p-8 mb-8 col-span-4 rounded-2xl border-4" style="background-color: rgba(30, 30, 30, 0.9); border-color: var(--color-accent); min-height: auto;">
+                <div class="p-5 mb-5 col-span-2 rounded-2xl border-4" style="background-color: rgba(30, 30, 30, 0.9); border-color: var(--color-accent); min-height: auto;">
                     <h3 class="text-3xl font-bold mb-2 header-font" style="color: var(--color-secondary);">Location: <span id="location-name">--</span></h3>
                     <p class="text-xl font-medium mb-4" style="color: var(--color-accent);">
                         Coordinates: ($\phi$ = <span id="display-latitude-loc">--</span>&deg;, $\lambda$ = <span id="display-longitude-loc">--</span>&deg;)
                     </p>
                     
                     <!-- MAP CONTAINER -->
-                    <div id="location-map-container" class="w-full h-72 rounded-xl shadow-inner flex flex-col items-center justify-center text-center p-4 bg-gray-900 relative overflow-hidden">
-                        <div class="absolute inset-0 bg-cover bg-center transition duration-500" id="map-background-image"></div>
-                        <div class="relative z-10 p-4 rounded-lg bg-black/50 text-white font-bold text-lg leading-snug" id="location-info-overlay">
-                            Loading Map View...
+                    <div id="location-map-container" class="w-full h-729 rounded-xl shadow-inner flex flex-col items-center justify-center text-center p-4 bg-gray-900 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-cover bg-center transition duration-200" id="map-background-image"></div>
+                        <div class="relative z-10 p-2 rounded-lg bg-black/50 text-white font-bold text-lg leading-snug" id="location-info-overlay">
+                            loading location
                         </div>
                     </div>
                     
@@ -1026,7 +1026,7 @@ document.getElementById("copy-button").addEventListener("click", () => {
 
             // --- Location Display and Naming ---
             locationNameElement.innerHTML = '<span class="spinner" style="border-top-color: var(--color-accent);"></span>Fetching location...';
-            locationInfoOverlay.innerHTML = 'Loading Map View...';
+            locationInfoOverlay.innerHTML = 'Loading location...';
             mapBackground.style.backgroundImage = 'none'; 
             shareButton.style.display = 'none';
 
@@ -1049,8 +1049,6 @@ document.getElementById("copy-button").addEventListener("click", () => {
             mapLink.href = mapUrl;
 
             // Update Static Map Background image
-            const mapPlaceholderUrl = `https://placehold.co/800x288/1f2937/d1d5db?text=Map+Preview+for+${locationName.split(',')[0]}&font=inter&css={"font-size":"24px"}`;
-            mapBackground.style.backgroundImage = `url('${mapPlaceholderUrl}')`;
             
             // Update Location Info Overlay text (Using HTML entities for phi and lambda)
             locationInfoOverlay.innerHTML = `
